@@ -1,0 +1,5 @@
+{
+  "solidity.remappings": [
+    "@openzeppelin/=./rEther/node_modules/@openzeppelin"
+  ]
+}
