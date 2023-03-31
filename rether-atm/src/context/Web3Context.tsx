@@ -12,21 +12,26 @@ declare global {
     }
 }
 
+const tempWeb3 = new Web3();
+
 export interface Web3Context {
     account?: string;
     connect?: () => void;
     bzz?: Bzz;
     eth?: Eth;
     shh?: Shh;
-    utils?: Utils;
-    web3?: Web3;
+    utils: Utils;
+    web3: Web3;
 }
 
-export const Web3Context = createContext<Web3Context>({});
+export const Web3Context = createContext<Web3Context>({
+    web3: tempWeb3,
+    utils: tempWeb3.utils,
+});
 export const useWeb3Context = () => useContext(Web3Context);
 
 const Web3ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [web3, setWeb3] = useState<Web3>();
+    const [web3, setWeb3] = useState<Web3>(tempWeb3);
     const [account, setAccount] = useState<string>();
 
     const connect = async () => {
@@ -47,7 +52,7 @@ const Web3ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 connect,
                 eth: web3?.eth,
                 shh: web3?.shh,
-                utils: web3?.utils,
+                utils: web3.utils,
                 web3,
             }}
         >
